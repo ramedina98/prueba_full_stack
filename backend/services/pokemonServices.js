@@ -4,6 +4,7 @@
  * This file contains all the necessary service to manage the operation
  * of the PokenApi module...
  */
+import { generatePDF } from '../utils/pdfGenerator.js';
 import axios from "axios";
 
 /**
@@ -87,4 +88,36 @@ const getPokemons = async (params) => {
     }
 }
 
-export { getPokemons };
+/**
+ * @method GET
+ *
+ * This service helps me to handle the process of create a PDF with the info of a
+ * specific Pokemon...
+ *
+ * @param { pokemon_data }
+ * @returns pdfBuffer
+ */
+const getPokemonPDF = async (pokemon_data) => {
+
+    // check if all the info was recive...
+    if(!pokemon_data.image || !pokemon_data.name || pokemon_data.abilities.length === 0){
+        throw new Error('Missing required Pokémon data: image, name, or abilities');
+    }
+
+    try {
+        // generate the PDF from the pokemon_data...
+        const pdfBuffer = await generatePDF(pokemon_data);
+
+        if(!pdfBuffer){
+            throw new Error('Failed to generate PDF');
+        }
+
+        return pdfBuffer;
+    } catch (error) {
+        console.error('Error generating PDF:', error.message);
+        // Handle the error properly, e.g., by throwing an error or sending a custom response
+        throw new Error('Failed to generate Pokémon PDF');
+    }
+}
+
+export { getPokemons, getPokemonPDF };

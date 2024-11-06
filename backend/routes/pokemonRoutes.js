@@ -5,7 +5,7 @@
  * In this file we can find all the needed routes for both modules, poke api and pokemon trainers...
  */
 import express from 'express';
-import { getPokemonsController, getPokemonPDF } from '../controllers/pokemonControllers.js';
+import { getPokemonsController, getPokemonPDFController } from '../controllers/pokemonControllers.js';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ const router = express.Router();
 // route to get the list of pokemons with optional pagination and search...
 router.get('/', getPokemonsController);
 // route to generate a PDF of pokemon details
-router.get('/pdf', getPokemonPDF);
+router.get('/pdf', getPokemonPDFController);
 
 /**
  * @module pokemonTrainers

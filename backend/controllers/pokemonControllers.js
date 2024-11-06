@@ -3,11 +3,7 @@
  *
  * This file contains all the required controllers for the PokeApi module...
  */
-import axios from 'axios';
-import { generatePDF } from '../utils/pdfGenerator.js';
-import { getPokemons } from '../services/pokemonServices.js';
-
-const POKEMON_URL = 'https://pokeapi.co/api/v2/pokemon/';
+import { getPokemons, getPokemonPDF } from '../services/pokemonServices.js';
 
 /**
  * @method GET
@@ -42,30 +38,33 @@ const getPokemonsController = async (req, res) => {
 }
 
 // generate PDF of pokemon information...
-const getPokemonPDF = async (req, res) => {
-    const { name } = req.query;
-
-    if(!name){
-        res.status(400).json({
-            error: 'Pokemon name is required for PDF generation'
-        });
-    }
-
+const getPokemonPDFController = async (req, res) => {
     try {
-        // fetch datailed data for the given pokemon name...
-        const response = await axios.get(`${POKEMON_URL}/${name}`);
-        const pokemon = response.data;
+        const { pokemon_data } = req.body;
 
-        // generate PDF and send it to the client...
-        const pdfBuffer = await generatePDF(pokemon);
-        res.setHeader('Content-Disposition', `attachment; filename=${name}.pdf`);
+        if(!pokemon_data){
+            res.status(400).json({
+                error: 'Missing pokemon data in the request'
+            });
+        }
+
+        // generate the PDF buffer using the pokemon data...
+        const pdfBuffer = await getPokemonPDF(pokemon_data);
+
+        // if PDF generationg failed, send an error response...
+        if(!pdfBuffer){
+            res.status(500).json({
+                error: 'Failed to generate PDF'
+            });
+        }
+
+        //Set the content type to PDF and send the file buffer
         res.contentType('application/pdf');
         res.send(pdfBuffer);
     } catch (error) {
-        res.status(500).json({
-            error: 'Error generating PDF'
-        });
+        console.error('Error generating PDF:', error.message);
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
-export { getPokemonsController, getPokemonPDF };
+export { getPokemonsController, getPokemonPDFController };
