@@ -37,7 +37,16 @@ const getPokemonsController = async (req, res) => {
     }
 }
 
-// generate PDF of pokemon information...
+/**
+ * @method GET
+ *
+ * This controller helps me to handle the process of recive info of a pokemon from the client, and
+ * use the service "getPokemoPDF" to create a pdf with the name, image and abilities of a specific
+ * pokemon...
+ *
+ * @param req.body
+ * @returns pdfBuffer
+ */
 const getPokemonPDFController = async (req, res) => {
     try {
         const { pokemon_data } = req.body;
