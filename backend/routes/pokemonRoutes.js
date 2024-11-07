@@ -6,6 +6,10 @@
  */
 import express from 'express';
 import { getPokemonsController, getPokemonPDFController } from '../controllers/pokemonControllers.js';
+import {
+    getTrainersController,
+    createTrainerController
+} from '../controllers/pokemonTrainersControllers.js';
 
 const router = express.Router();
 
@@ -20,5 +24,7 @@ router.get('/pdf', getPokemonPDFController);
 /**
  * @module pokemonTrainers
  */
+router.get('/trainers/', getTrainersController);
+router.post('/new-trainers/', createTrainerController);
 
 export default router;
