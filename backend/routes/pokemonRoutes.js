@@ -8,7 +8,8 @@ import express from 'express';
 import { getPokemonsController, getPokemonPDFController } from '../controllers/pokemonControllers.js';
 import {
     getTrainersController,
-    createTrainerController
+    createTrainerController,
+    updateTrainersController
 } from '../controllers/pokemonTrainersControllers.js';
 
 const router = express.Router();
@@ -24,7 +25,11 @@ router.get('/pdf', getPokemonPDFController);
 /**
  * @module pokemonTrainers
  */
+// route to get the list of trainers...
 router.get('/trainers/', getTrainersController);
+// route to create a new record...
 router.post('/new-trainers/', createTrainerController);
+// route to update a record or several of them...
+router.put('/update-trainers/', updateTrainersController);
 
 export default router;

@@ -93,5 +93,51 @@ const createTrainer = async (trainers) => {
     }
 }
 
+/**
+ * @method PUT
+ *
+ * This service helps to handle the process of update the data of a specific trainer, or trainers,
+ * it recive as a param an object array call trainers, which has inside the trainers and their info to be
+ * update...
+ *
+ * @param {Object array} trainers
+ * @returns {}
+ */
+const updateTrainers = async (trainers) => {
+    try {
+        // check if trainers is an array and has at leats one record...
+        if(!Array.isArray(trainers) || trainers.length === 0){
+            console.log(trainers);
+            throw new Error('The trainers parameter must be a non-empty array.');
+        }
 
-export { getTrainers, createTrainer };
+        // variable to store the results of each update...
+        const updateResults = [];
+
+        // iterate each trainer in the trainers array to update their information...
+        for(const trainer of trainers){
+            // ensure that each trainer has an id tu update their info...
+            if(!trainer._id){
+                throw new Error(`Each trainer object must have and id field. Missing id for ${JSON.stringify(trainer.name)}`);
+            }
+
+            // update the trainer data in the database...
+            const updateTrainer = await Trainers.findByIdAndUpdate(
+                trainer._id,
+                { $set: trainer },
+                { new: true, runValidators: true }
+            );
+
+            // add the result into updateResults array...
+            updateResults.push(updateTrainer);
+        }
+
+        // return an object with the results of the updates...
+        return updateResults;
+    } catch (error) {
+        console.error(`Error updating trainers: ${error.message}`);
+        throw new Error(`Failed to update trainers: ${error.message}`);
+    }
+}
+
+export { getTrainers, createTrainer, updateTrainers };

@@ -6,7 +6,8 @@
  */
 import {
     getTrainers,
-    createTrainer
+    createTrainer,
+    updateTrainers
 } from "../services/pokemonTrainersServices.js";
 
 /**
@@ -63,4 +64,41 @@ const createTrainerController = async (req, res) => {
     }
 }
 
-export { getTrainersController, createTrainerController };
+/**
+ * @method PUT
+ *
+ * This controller helps me to handle the process of update a trainer record o several of them
+ * at the same time.
+ *
+ * @param req.body
+ * @returns updateResults
+ */
+const updateTrainersController = async (req, res) => {
+    // deconstruting the req.body to retrieve the object array trainers...
+    const { trainers } = req.body;
+
+    try {
+        // update the data...
+        const response = await updateTrainers(trainers);
+
+        // check if there was any updated...
+        if(response.length === 0){
+            res.status(404).json({
+                message: 'Trainers or trainer not found.'
+            });
+        }
+
+        // everything went well...
+        res.status(200).json({
+            message: `${response.length} trainers updated successfully`,
+            response
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            error: `Internal server error: ${error.message}`
+        });
+    }
+}
+
+export { getTrainersController, createTrainerController, updateTrainersController };
