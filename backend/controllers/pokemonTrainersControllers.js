@@ -91,7 +91,7 @@ const updateTrainersController = async (req, res) => {
 
         // everything went well...
         res.status(200).json({
-            message: `${response.length} trainers updated successfully`,
+            message: `${response.length} entrenadores actualizados con exito.`,
             response
         });
 

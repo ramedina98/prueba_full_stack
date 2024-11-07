@@ -167,8 +167,8 @@ const deleteTrainers = async (trainers_ids) => {
 
         // check if there is 1 or more elements in the array, if there is just setting singular the returned message...
         let message  = trainers_ids.length === 1 ?
-            'Trainer deleted successfully':
-            `${result.deletedCount} trainers deleted successfully.`;
+            'Entrenador borrado con exito.':
+            `${result.deletedCount} entrenadores borrados con exito.`;
 
         // return a success message indicating how many records were deleted...
         return message;
