@@ -19,7 +19,7 @@ import Trainers from '../models/pokemonTrainersModel.js';
  * to make dynamic search by name...
  *
  * @param {string} search
- * @returns {trainers} []
+ * @returns {string} trainer[]
  */
 const getTrainers = async (search) => {
     try {

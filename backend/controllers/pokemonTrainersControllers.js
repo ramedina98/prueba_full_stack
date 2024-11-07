@@ -10,6 +10,7 @@ import {
     updateTrainers,
     deleteTrainers
 } from "../services/pokemonTrainersServices.js";
+import { stringify } from 'csv-stringify/sync';
 
 /**
  * @method GET
@@ -31,6 +32,53 @@ const getTrainersController = async (req, res) => {
         res.status(200).json({
             trainers
         });
+    } catch (error) {
+        res.status(500).json({
+            error: `Internal server error: ${error.message}`
+        });
+    }
+}
+
+/**
+ * @method GET
+ *
+ * This second GET controller helps me to retrieve all the trainers stored in the collection, and
+ * create a csv file with write them in it...
+ *
+ * @returns {Buffer} csvBuffer...
+ */
+const csvTrainersFileController = async (_req, res) => {
+    try {
+        // 1. get all the trainers records...
+        const trainers = await getTrainers();
+
+        // 2. check if trainers has data to procces...
+        if(!trainers || trainers.length === 0){
+            throw new Error('No trainer data available to generate CSV.');
+        }
+
+        // 3. convert the data into CSV format...
+        const csvData = trainers.map(trainer => ({
+            nombre: trainer.nombre,
+            apellidos: trainer.apellidos,
+            telefono: trainer.telefono,
+            medallas: trainer.medallas
+        }));
+
+        const csvBuffer = stringify(csvData, {
+            header: true,
+            columns: {
+                nombre: 'Nombre',
+                apellidos: 'Apellidos',
+                telefono: 'Teléfono',
+                medallas: 'Medallas'
+            }
+        });
+
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=trainers.csv');
+        res.send(csvBuffer);
+
     } catch (error) {
         res.status(500).json({
             error: `Internal server error: ${error.message}`
@@ -125,4 +173,4 @@ const deleteTrainersController = async (req, res) => {
     }
 }
 
-export { getTrainersController, createTrainerController, updateTrainersController, deleteTrainersController };
+export { getTrainersController, csvTrainersFileController, createTrainerController, updateTrainersController, deleteTrainersController };

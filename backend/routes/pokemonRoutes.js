@@ -8,6 +8,7 @@ import express from 'express';
 import { getPokemonsController, getPokemonPDFController } from '../controllers/pokemonControllers.js';
 import {
     getTrainersController,
+    csvTrainersFileController,
     createTrainerController,
     updateTrainersController,
     deleteTrainersController
@@ -28,6 +29,8 @@ router.get('/pdf', getPokemonPDFController);
  */
 // route to get the list of trainers...
 router.get('/trainers/', getTrainersController);
+// route to create a csv file with all the trainers stored...
+router.get('/csv-trainers/', csvTrainersFileController);
 // route to create a new record...
 router.post('/new-trainers/', createTrainerController);
 // route to update a record or several of them...
