@@ -9,7 +9,8 @@ import { getPokemonsController, getPokemonPDFController } from '../controllers/p
 import {
     getTrainersController,
     createTrainerController,
-    updateTrainersController
+    updateTrainersController,
+    deleteTrainersController
 } from '../controllers/pokemonTrainersControllers.js';
 
 const router = express.Router();
@@ -31,5 +32,7 @@ router.get('/trainers/', getTrainersController);
 router.post('/new-trainers/', createTrainerController);
 // route to update a record or several of them...
 router.put('/update-trainers/', updateTrainersController);
+// route to delete a record or several of them...
+router.delete('/delete-trainers/', deleteTrainersController);
 
 export default router;

@@ -107,7 +107,6 @@ const updateTrainers = async (trainers) => {
     try {
         // check if trainers is an array and has at leats one record...
         if(!Array.isArray(trainers) || trainers.length === 0){
-            console.log(trainers);
             throw new Error('The trainers parameter must be a non-empty array.');
         }
 
@@ -140,4 +139,43 @@ const updateTrainers = async (trainers) => {
     }
 }
 
-export { getTrainers, createTrainer, updateTrainers };
+/**
+ * @method DELETE
+ *
+ * This service helps me to delete a record or several of them at the same time...
+ *
+ * @param {array} trainers_ids
+ * @returns {string} message of success
+ */
+const deleteTrainers = async (trainers_ids) => {
+    // check that the trainsers_id is an array and it is not empty...
+    if(!Array.isArray(trainers_ids) || trainers_ids.length === 0){
+        throw new Error('The trainers parameter must be a non-empty array.');
+    }
+
+    try {
+        // check if the all the ids match with the ones stored in the database...
+        const existingTrainers = await Trainers.find({ _id: { $in: trainers_ids }});
+
+        //check how matched...
+        if(trainers_ids.length !== existingTrainers.length){
+            throw new Error('Some ids are wrong or do not exists.');
+        }
+
+        // delete the records...
+        const result = await Trainers.deleteMany({ _id: { $in: trainers_ids } });
+
+        // check if there is 1 or more elements in the array, if there is just setting singular the returned message...
+        let message  = trainers_ids.length === 1 ?
+            'Trainer deleted successfully':
+            `${result.deletedCount} trainers deleted successfully.`;
+
+        // return a success message indicating how many records were deleted...
+        return message;
+    } catch (error) {
+        console.error('Error deleting trainers:', error.message);
+        throw new Error('Failed to delete trainers: ' + error.message);
+    }
+}
+
+export { getTrainers, createTrainer, updateTrainers, deleteTrainers };

@@ -7,7 +7,8 @@
 import {
     getTrainers,
     createTrainer,
-    updateTrainers
+    updateTrainers,
+    deleteTrainers
 } from "../services/pokemonTrainersServices.js";
 
 /**
@@ -101,4 +102,27 @@ const updateTrainersController = async (req, res) => {
     }
 }
 
-export { getTrainersController, createTrainerController, updateTrainersController };
+/**
+ * @method DELETE
+ *
+ * Controller to handle the procces of delete ona or several records...
+ *
+ * @param {req, res} --> req.body
+ * @returns res.json({});
+ */
+const deleteTrainersController = async (req, res) => {
+    // deconstruting the req.body to retrieve the trainers_ids array...
+    const { trainers_ids } = req.body;
+
+    try {
+        const response = await deleteTrainers(trainers_ids);
+
+        res.status(200).json({ message: response });
+    } catch (error) {
+        res.status(500).json({
+            error: `Internal server error: ${error.message}`
+        });
+    }
+}
+
+export { getTrainersController, createTrainerController, updateTrainersController, deleteTrainersController };
