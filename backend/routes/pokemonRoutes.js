@@ -22,7 +22,7 @@ const router = express.Router();
 // route to get the list of pokemons with optional pagination and search...
 router.get('/', getPokemonsController);
 // route to generate a PDF of pokemon details
-router.get('/pdf', getPokemonPDFController);
+router.post('/pdf', getPokemonPDFController);
 
 /**
  * @module pokemonTrainers

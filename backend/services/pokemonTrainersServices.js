@@ -53,8 +53,13 @@ const getTrainers = async (search) => {
         });
 
         //if there is data in the search variable we do the filtering...
-        if(search){
-            sortedTrainersData = sortedTrainersData.filter(t => t.name.includes(search.toLowerCase()));
+        if (search) {
+            sortedTrainersData = sortedTrainersData.filter(t =>
+                (t.nombre && t.nombre.toLowerCase().includes(search.toLowerCase())) ||
+                (t.apellidos && t.apellidos.toLowerCase().includes(search.toLowerCase())) ||
+                (t.medallas && t.medallas.toString().includes(search)) ||
+                (t.telefono && t.telefono.toString().includes(search))
+            );
         }
 
         // returns the data...
