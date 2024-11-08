@@ -22,9 +22,11 @@ export default function PokédexContainer({ changeState }){
     }
 
     const handleLimitInput = (e) => {
-        const limit = e.target.value;
+        const limit = parseInt(e.target.value, 10);
         if(limit > 0){
-            setLimit(limit);
+            setLimit(limit); // Cambias el límite dinámicamente.
+            setPage(1); // Reinicias la página a la primera para evitar problemas de paginación
+            setPagination(0); // Reinicias la paginación
         }
     }
 
@@ -89,7 +91,7 @@ export default function PokédexContainer({ changeState }){
             console.error("Error al descargar el archivo CSV:", error.message);
         }
     }
-
+    console.log('Pagina ' + pagination)
     const handleButtonClick = async (buttonType) => {
         switch(buttonType){
             case 'previus':
