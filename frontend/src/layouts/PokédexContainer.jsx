@@ -24,9 +24,9 @@ export default function PokédexContainer({ changeState }){
     const handleLimitInput = (e) => {
         const limit = parseInt(e.target.value, 10);
         if(limit > 0){
-            setLimit(limit); // Cambias el límite dinámicamente.
-            setPage(1); // Reinicias la página a la primera para evitar problemas de paginación
-            setPagination(0); // Reinicias la paginación
+            setLimit(limit);
+            setPage(1);
+            setPagination(0);
         }
     }
 
