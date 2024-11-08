@@ -91,7 +91,7 @@ export default function PokédexContainer({ changeState }){
             console.error("Error al descargar el archivo CSV:", error.message);
         }
     }
-    console.log('Pagina ' + pagination)
+
     const handleButtonClick = async (buttonType) => {
         switch(buttonType){
             case 'previus':

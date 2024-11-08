@@ -135,6 +135,7 @@ export default function TrainerForm({ handleAddTrainer, data, methodType, openFo
                         name="telefono"
                         id="telefono"
                         onChange={handleInputs}
+                        maxLength='12'
                     />
                     {errors.telefono && <span style={{ color: 'red' }}>{errors.telefono}</span>}
                 </li>
